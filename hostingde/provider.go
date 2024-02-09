@@ -22,6 +22,7 @@ var (
 type hostingdeProviderModel struct {
 	AccountId types.String `tfsdk:"account_id"`
 	AuthToken types.String `tfsdk:"auth_token"`
+	BaseUrl   types.String `tfsdk:"base_url"`
 }
 
 // New is a helper function to simplify provider server and testing implementation.
@@ -49,6 +50,10 @@ func (p *hostingdeProvider) Schema(_ context.Context, _ provider.SchemaRequest, 
 				Description: "Auth token for hosting.de API. May also be provided via HOSTINGDE_AUTH_TOKEN environment variable.",
 				Optional:    true,
 				Sensitive:   true,
+			},
+			"base_url": schema.StringAttribute{
+				Description: "Base URL for hosting.de API. May also be provided via HOSTINGDE_BASE_URL environment variable.",
+				Optional:    true,
 			},
 		},
 	}
@@ -93,6 +98,7 @@ func (p *hostingdeProvider) Configure(ctx context.Context, req provider.Configur
 
 	account_id := os.Getenv("HOSTINGDE_ACCOUNT_ID")
 	auth_token := os.Getenv("HOSTINGDE_AUTH_TOKEN")
+	base_url := os.Getenv("HOSTINGDE_BASE_URL")
 
 	if !config.AccountId.IsNull() {
 		account_id = config.AccountId.ValueString()
@@ -100,6 +106,15 @@ func (p *hostingdeProvider) Configure(ctx context.Context, req provider.Configur
 
 	if !config.AuthToken.IsNull() {
 		auth_token = config.AuthToken.ValueString()
+	}
+
+	if !config.BaseUrl.IsNull() {
+		base_url = config.BaseUrl.ValueString()
+	}
+
+	// Default for API Base URL
+	if base_url == "" {
+		base_url = "https://secure.hosting.de/api/dns/v1/json"
 	}
 
 	// If any of the expected configurations are missing, return
@@ -120,12 +135,13 @@ func (p *hostingdeProvider) Configure(ctx context.Context, req provider.Configur
 
 	ctx = tflog.SetField(ctx, "hostingde_account_id", account_id)
 	ctx = tflog.SetField(ctx, "hostingde_auth_token", auth_token)
+	ctx = tflog.SetField(ctx, "hostingde_base_url", base_url)
 	ctx = tflog.MaskFieldValuesWithFieldKeys(ctx, "hostingde_auth_token")
 
 	tflog.Debug(ctx, "Creating hosting.de client")
 
 	// Create a new hosting.de client using the configuration values
-	client := NewClient(&account_id, &auth_token)
+	client := NewClient(&account_id, &auth_token, &base_url)
 
 	// Make the hosting.de client available during DataSource and Resource
 	// type Configure methods.

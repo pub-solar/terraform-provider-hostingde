@@ -15,6 +15,7 @@ Currently only supports maintaining DNS zones and records.
 **Environment variables for provider configuration**
 - Required: `HOSTINGDE_AUTH_TOKEN`, go to your [hosting.de profile](https://secure.hosting.de/profile) and create an API Key (token)
 - Optional: `HOSTINGDE_ACCOUNT_ID`
+- Optional: `HOSTINGDE_BASE_URL`
 
 Before continuing, make sure you have created an API token with DNS permissions
 and allow-listed your [external IP address](https://wieistmeineip.de/).
@@ -34,3 +35,4 @@ and allow-listed your [external IP address](https://wieistmeineip.de/).
 
 - `account_id` (String) Account ID for hosting.de API. May also be provided via HOSTINGDE_ACCOUNT_ID environment variable.
 - `auth_token` (String, Sensitive) Auth token for hosting.de API. May also be provided via HOSTINGDE_AUTH_TOKEN environment variable.
+- `base_url` (String) Base URL for hosting.de API. May also be provided via HOSTINGDE_BASE_URL environment variable.
