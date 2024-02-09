@@ -8,7 +8,7 @@ import (
 
 // https://www.hosting.de/api/?json#list-recordconfigs
 func (d *Client) listRecords(findRequest RecordsFindRequest) (*RecordsFindResponse, error) {
-	uri := defaultBaseURL + "/recordsFind"
+	uri := d.baseURL + "/recordsFind"
 
 	findResponse := &RecordsFindResponse{}
 
@@ -30,7 +30,7 @@ func (d *Client) listRecords(findRequest RecordsFindRequest) (*RecordsFindRespon
 
 // https://www.hosting.de/api/?json#updating-records-in-a-zone
 func (c *Client) updateRecords(updateRequest RecordsUpdateRequest) (*RecordsUpdateResponse, error) {
-	uri := defaultBaseURL + "/recordsUpdate"
+	uri := c.baseURL + "/recordsUpdate"
 
 	updateResponse := &RecordsUpdateResponse{}
 

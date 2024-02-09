@@ -8,7 +8,7 @@ import (
 
 // https://www.hosting.de/api/?json#listing-zones
 func (c *Client) listZones(findRequest ZonesFindRequest) (*ZonesFindResponse, error) {
-	uri := defaultBaseURL + "/zonesFind"
+	uri := c.baseURL + "/zonesFind"
 
 	findResponse := &ZonesFindResponse{}
 
@@ -30,7 +30,7 @@ func (c *Client) listZones(findRequest ZonesFindRequest) (*ZonesFindResponse, er
 
 // https://www.hosting.de/api/?json#creating-new-zones
 func (c *Client) createZone(createRequest ZoneCreateRequest) (*ZoneCreateResponse, error) {
-	uri := defaultBaseURL + "/zoneCreate"
+	uri := c.baseURL + "/zoneCreate"
 
 	createResponse := &ZoneCreateResponse{}
 
@@ -48,7 +48,7 @@ func (c *Client) createZone(createRequest ZoneCreateRequest) (*ZoneCreateRespons
 
 // https://www.hosting.de/api/?json#updating-zones
 func (c *Client) updateZone(updateRequest ZoneUpdateRequest) (*ZoneUpdateResponse, error) {
-	uri := defaultBaseURL + "/zoneUpdate"
+	uri := c.baseURL + "/zoneUpdate"
 
 	updateResponse := &ZoneUpdateResponse{}
 
@@ -66,7 +66,7 @@ func (c *Client) updateZone(updateRequest ZoneUpdateRequest) (*ZoneUpdateRespons
 
 // https://www.hosting.de/api/?json#deleting-zones
 func (c *Client) deleteZone(deleteRequest ZoneDeleteRequest) (*ZoneDeleteResponse, error) {
-	uri := defaultBaseURL + "/zoneDelete"
+	uri := c.baseURL + "/zoneDelete"
 
 	deleteResponse := &ZoneDeleteResponse{}
 
@@ -84,7 +84,7 @@ func (c *Client) deleteZone(deleteRequest ZoneDeleteRequest) (*ZoneDeleteRespons
 
 // https://www.hosting.de/api/?json#purging-zones
 func (c *Client) purgeZone(purgeRequest ZoneDeleteRequest) (*ZoneDeleteResponse, error) {
-	uri := defaultBaseURL + "/zonePurgeRestorable"
+	uri := c.baseURL + "/zonePurgeRestorable"
 
 	purgeResponse := &ZoneDeleteResponse{}
 

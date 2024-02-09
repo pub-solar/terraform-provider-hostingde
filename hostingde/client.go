@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-const defaultBaseURL = "https://secure.hosting.de/api/dns/v1/json"
-
 // Client -
 type Client struct {
 	HTTPClient *http.Client
@@ -23,8 +21,8 @@ type Client struct {
 	baseURL    string
 }
 
-func NewClient(accountId, authToken *string) *Client {
-	var account, token string
+func NewClient(accountId, authToken, baseUrl *string) *Client {
+	var account, token, url string
 
 	if accountId != nil {
 		account = *accountId
@@ -32,12 +30,15 @@ func NewClient(accountId, authToken *string) *Client {
 	if authToken != nil {
 		token = *authToken
 	}
+	if baseUrl != nil {
+		url = *baseUrl
+	}
 
 	c := Client{
 		HTTPClient: &http.Client{Timeout: 10 * time.Second},
 		accountId:  account,
 		authToken:  token,
-		baseURL:    defaultBaseURL,
+		baseURL:    url,
 	}
 
 	return &c
