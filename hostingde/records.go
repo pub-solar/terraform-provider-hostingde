@@ -17,10 +17,6 @@ func (d *Client) listRecords(findRequest RecordsFindRequest) (*RecordsFindRespon
 		return nil, err
 	}
 
-	if len(findResponse.Response.Data) == 0 {
-		return nil, fmt.Errorf("%v: %s", err, toErrorWithNewlines(uri, rawResp))
-	}
-
 	if findResponse.Status != "success" {
 		return findResponse, errors.New(toErrorWithNewlines(uri, rawResp))
 	}
