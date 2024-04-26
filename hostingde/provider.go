@@ -13,6 +13,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
+const defaultBaseURL = "https://secure.hosting.de/api/dns/v1/json"
+
 // Ensure the implementation satisfies the expected interfaces
 var (
 	_ provider.Provider = &hostingdeProvider{}
@@ -114,7 +116,7 @@ func (p *hostingdeProvider) Configure(ctx context.Context, req provider.Configur
 
 	// Default for API Base URL
 	if base_url == "" {
-		base_url = "https://secure.hosting.de/api/dns/v1/json"
+		base_url = defaultBaseURL
 	}
 
 	// If any of the expected configurations are missing, return
