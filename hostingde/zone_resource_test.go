@@ -16,7 +16,6 @@ func TestAccZoneResource(t *testing.T) {
 resource "hostingde_zone" "test" {
   name = "example.test"
   type = "NATIVE"
-  email = "hostmaster@example.test"
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(

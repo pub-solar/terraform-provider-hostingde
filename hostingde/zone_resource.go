@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -92,6 +93,8 @@ func (r *zoneResource) Create(ctx context.Context, req resource.CreateRequest, r
 		ztype = "NATIVE"
 	}
 	email := plan.EMailAddress.ValueString()
+	ctx = tflog.SetField(ctx, "email", email)
+	tflog.Debug(ctx, "DEBUG email")
 
 	// Generate API request body from plan
 	zoneReq := ZoneCreateRequest{
@@ -112,6 +115,8 @@ func (r *zoneResource) Create(ctx context.Context, req resource.CreateRequest, r
 		)
 		return
 	}
+	// FIXME print something useful
+	println(zone)
 
 	// Map response body to schema and populate Computed attribute values
 	plan.ID = types.StringValue(zone.Response.ZoneConfig.ID)
