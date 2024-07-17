@@ -2,6 +2,7 @@ package hostingde
 
 import (
 	"context"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -20,6 +21,11 @@ var (
 	_ resource.ResourceWithConfigure   = &recordResource{}
 	_ resource.ResourceWithImportState = &recordResource{}
 )
+
+func normalizeRecordContent(content string) string {
+	newContent := strings.ReplaceAll(content, "\" \"", "");
+	return strings.ReplaceAll(newContent, "\"", "");
+}
 
 // NewRecordResource is a helper function to simplify the provider implementation.
 func NewRecordResource() resource.Resource {
@@ -130,9 +136,19 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 	}
 
 	var returnedRecord DNSRecord
-	for _, r := range recordResp.Response.Records {
-		if r.Name == record.Name && r.Type == record.Type && r.Content == record.Content && r.TTL == record.TTL {
-			returnedRecord = r
+	for _, responseRecord := range recordResp.Response.Records {
+		if responseRecord.Name == record.Name && responseRecord.Type == record.Type && responseRecord.TTL == record.TTL {
+			if responseRecord.Content == record.Content {
+				returnedRecord = responseRecord
+				break;
+			} 
+
+			normalizedContent := normalizeRecordContent(responseRecord.Content);
+			if normalizedContent == record.Content {
+				returnedRecord = responseRecord
+				returnedRecord.Content = normalizedContent
+				break;
+			} 
 		}
 	}
 
@@ -189,7 +205,7 @@ func (r *recordResource) Read(ctx context.Context, req resource.ReadRequest, res
 	state.ID = types.StringValue(returnedRecord.ID)
 	state.Name = types.StringValue(returnedRecord.Name)
 	state.Type = types.StringValue(returnedRecord.Type)
-	state.Content = types.StringValue(returnedRecord.Content)
+	state.Content = types.StringValue(normalizeRecordContent(returnedRecord.Content))
 	state.TTL = types.Int64Value(int64(returnedRecord.TTL))
 	state.Priority = types.Int64Value(int64(returnedRecord.Priority))
 
@@ -238,9 +254,19 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 
 	var returnedRecord DNSRecord
-	for _, r := range recordResp.Response.Records {
-		if r.Name == record.Name && r.Type == record.Type && r.Content == record.Content && r.TTL == record.TTL {
-			returnedRecord = r
+	for _, responseRecord := range recordResp.Response.Records {
+		if responseRecord.Name == record.Name && responseRecord.Type == record.Type && responseRecord.TTL == record.TTL {
+			if responseRecord.Content == record.Content {
+				returnedRecord = responseRecord
+				break;
+			} 
+
+			normalizedContent := normalizeRecordContent(responseRecord.Content);
+			if normalizedContent == record.Content {
+				returnedRecord = responseRecord
+				returnedRecord.Content = normalizedContent
+				break;
+			} 
 		}
 	}
 

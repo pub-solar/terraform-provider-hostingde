@@ -66,6 +66,33 @@ resource "hostingde_record" "test_mx" {
 					resource.TestCheckResourceAttrSet("hostingde_record.test_mx", "id"),
 				),
 			},
+			// Create and read TXT testing
+			{
+				Config: providerConfig + `
+resource "hostingde_zone" "test" {
+  name = "example2.test"
+  type = "NATIVE"
+  email = "hostmaster@example2.test"
+}
+resource "hostingde_record" "test_dkim" {
+  zone_id = hostingde_zone.test.id
+  name = "default._domainkey.example2.test"
+  type = "TXT"
+  content = "v=DKIM1;k=rsa;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyla9hW3TvoXvZQxwzaJ4SZ9ict1HU3E6+FwLWniGe6TiPtcYrjTIsiudQb8tltibOXiS+qqbxzI+quI3aGU6osy2rIv0eWo8+oOOqOD9pERftc/aqe51cXuv4kPqwvpXEBwrXFWVM+VxivEubUJ7eKkFyXJpelv0LslXv/MmYbUyed6dF+reOGZCsvnbiRv74qdxbAL/25j62E8WrnxzJwhUtx/JhdBOjsHBvuw9hy6rZsVJL9eXayWyGRV6qmsLRzsRSBs+mDrgmKk4dugADd11+A03ics3i8hplRoWDkqnNKz1qy4f5TsV6v9283IANrAzRfHwX8EvNiFsBz+ZCQIDAQAB"
+  ttl = 300
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					// Verify name attribute.
+					resource.TestCheckResourceAttr("hostingde_record.test_dkim", "name", "default._domainkey.example2.test"),
+					// Verify type attribute.
+					resource.TestCheckResourceAttr("hostingde_record.test_dkim", "type", "TXT"),
+					// Verify email attribute.
+					resource.TestCheckResourceAttr("hostingde_record.test_dkim", "content", "v=DKIM1;k=rsa;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyla9hW3TvoXvZQxwzaJ4SZ9ict1HU3E6+FwLWniGe6TiPtcYrjTIsiudQb8tltibOXiS+qqbxzI+quI3aGU6osy2rIv0eWo8+oOOqOD9pERftc/aqe51cXuv4kPqwvpXEBwrXFWVM+VxivEubUJ7eKkFyXJpelv0LslXv/MmYbUyed6dF+reOGZCsvnbiRv74qdxbAL/25j62E8WrnxzJwhUtx/JhdBOjsHBvuw9hy6rZsVJL9eXayWyGRV6qmsLRzsRSBs+mDrgmKk4dugADd11+A03ics3i8hplRoWDkqnNKz1qy4f5TsV6v9283IANrAzRfHwX8EvNiFsBz+ZCQIDAQAB"),
+					// Verify dynamic values have any value set in the state.
+					resource.TestCheckResourceAttrSet("hostingde_record.test_dkim", "id"),
+				),
+			},
 			// ImportState testing
 			{
 				ResourceName:      "hostingde_zone.test",
