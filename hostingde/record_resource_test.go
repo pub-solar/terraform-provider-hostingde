@@ -52,6 +52,13 @@ resource "hostingde_record" "test_mx" {
   content = "mail.example2.test"
   priority = 10
 }
+resource "hostingde_record" "test_mx" {
+  zone_id = hostingde_zone.test.id
+  name = "example2.test"
+  type = "MX"
+  content = "mail.example2.test"
+  priority = 10
+}
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Verify name attribute.
@@ -140,6 +147,27 @@ resource "hostingde_record" "test_mx" {
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "content", "mail2.example2.test"),
 					// Verify content attribute.
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "priority", "20"),
+				),
+			},
+			// Update and Read testing for TXT records
+			{
+				Config: providerConfig + `
+resource "hostingde_zone" "test" {
+  name = "example2.test"
+  type = "NATIVE"
+  email = "hostmaster@example2.test"
+}
+resource "hostingde_record" "test_dkim" {
+  zone_id = hostingde_zone.test.id
+  name = "default._domainkey.example2.test"
+  type = "TXT"
+  content = "v=DKIM1;k=rsa;p=MiibiJanbGKQHKIg9W0baqefaaocaq8amiibcGkcaqeaYLA9Hw3tVOxVzqXWZAj4sz9ICT1hu3e6+fWlwNIgE6tIpTCyRJtiSIUDqB8TLTIBoxIs+QQBXZi+QUi3Agu6OSY2RiV0EwO8+OooQod9PerFTC/AQE51CxUV4KpQWVPxebWRxfwvm+vXIVeUBuj7EkKfYxjPELV0lSLxV/mMyBuYED6Df+REogzcSVNBIrV74QDXBal/25J62e8wRNXzJwhUtx/JhdBOjsHBvuw9hy6rZsVJL9eXayWyGRV6qmsLRzsRSBs+mDrgmKk4dugADd11+A03ics3i8hplRoWDkqnNKz1qy4f5TsV6v9283IANrAzRfHwX8EvNiFsBz+ZCQIDAQAB"
+  ttl = 300
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					// Verify content attribute.
+					resource.TestCheckResourceAttr("hostingde_record.test_dkim", "content", "v=DKIM1;k=rsa;p=MiibiJanbGKQHKIg9W0baqefaaocaq8amiibcGkcaqeaYLA9Hw3tVOxVzqXWZAj4sz9ICT1hu3e6+fWlwNIgE6tIpTCyRJtiSIUDqB8TLTIBoxIs+QQBXZi+QUi3Agu6OSY2RiV0EwO8+OooQod9PerFTC/AQE51CxUV4KpQWVPxebWRxfwvm+vXIVeUBuj7EkKfYxjPELV0lSLxV/mMyBuYED6Df+REogzcSVNBIrV74QDXBal/25J62e8wRNXzJwhUtx/JhdBOjsHBvuw9hy6rZsVJL9eXayWyGRV6qmsLRzsRSBs+mDrgmKk4dugADd11+A03ics3i8hplRoWDkqnNKz1qy4f5TsV6v9283IANrAzRfHwX8EvNiFsBz+ZCQIDAQAB"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase

@@ -137,7 +137,7 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	var returnedRecord DNSRecord
 	for _, responseRecord := range recordResp.Response.Records {
-		if responseRecord.Name == record.Name && responseRecord.Type == record.Type && responseRecord.TTL == record.TTL {
+		if responseRecord.Name == record.Name && responseRecord.Type == record.Type {
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
 				break;
@@ -255,7 +255,7 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	var returnedRecord DNSRecord
 	for _, responseRecord := range recordResp.Response.Records {
-		if responseRecord.Name == record.Name && responseRecord.Type == record.Type && responseRecord.TTL == record.TTL {
+		if responseRecord.Name == record.Name && responseRecord.Type == record.Type {
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
 				break;
