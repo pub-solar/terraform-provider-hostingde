@@ -22,6 +22,7 @@
           # PATH here
           packages = with pkgs; [
             go
+            goreleaser
             errcheck
             go-tools
             gnumake
