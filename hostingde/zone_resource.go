@@ -117,6 +117,7 @@ func (r *zoneResource) Create(ctx context.Context, req resource.CreateRequest, r
 	plan.ID = types.StringValue(zone.Response.ZoneConfig.ID)
 	plan.Name = types.StringValue(zone.Response.ZoneConfig.Name)
 	plan.Type = types.StringValue(zone.Response.ZoneConfig.Type)
+	plan.EMailAddress = types.StringValue(zone.Response.ZoneConfig.EMailAddress)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
