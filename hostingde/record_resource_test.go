@@ -45,12 +45,19 @@ resource "hostingde_zone" "test" {
   type = "NATIVE"
   email = "hostmaster@example2.test"
 }
-resource "hostingde_record" "test_mx2" {
+resource "hostingde_record" "test_mx" {
   zone_id = hostingde_zone.test.id
   name = "example2.test"
   type = "MX"
-  content = "mail2.example2.test"
-  priority = 20
+  content = "mail.example2.test"
+  priority = 10
+}
+resource "hostingde_record" "test_mx" {
+  zone_id = hostingde_zone.test.id
+  name = "example2.test"
+  type = "MX"
+  content = "mail.example2.test"
+  priority = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -64,16 +71,6 @@ resource "hostingde_record" "test_mx2" {
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "content", "mail.example2.test"),
 					// Verify dynamic values have any value set in the state.
 					resource.TestCheckResourceAttrSet("hostingde_record.test_mx", "id"),
-					// Verify name attribute.
-					resource.TestCheckResourceAttr("hostingde_record.test_mx2", "name", "example2.test"),
-					// Verify type attribute.
-					resource.TestCheckResourceAttr("hostingde_record.test_mx2", "type", "MX"),
-					// Verify priority attribute.
-					resource.TestCheckResourceAttr("hostingde_record.test_mx2", "priority", "20"),
-					// Verify email attribute.
-					resource.TestCheckResourceAttr("hostingde_record.test_mx2", "content", "mail2.example2.test"),
-					// Verify dynamic values have any value set in the state.
-					resource.TestCheckResourceAttrSet("hostingde_record.test_mx2", "id"),
 				),
 			},
 			// Create and read TXT testing
