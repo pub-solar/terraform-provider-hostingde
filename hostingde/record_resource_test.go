@@ -142,7 +142,7 @@ resource "hostingde_record" "test_mx" {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// Verify content attribute.
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "content", "mail2.example2.test"),
-					// Verify content attribute.
+					// Verify priority attribute.
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "priority", "20"),
 				),
 			},
