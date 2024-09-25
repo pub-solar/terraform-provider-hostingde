@@ -27,6 +27,7 @@
             go-tools
             gnumake
             golangci-lint
+            gopls
             inputs.nixpkgs-2305.legacyPackages.${pkgs.system}.terraform
           ];
           bash.extra = ''
