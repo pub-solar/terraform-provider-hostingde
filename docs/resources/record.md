@@ -30,6 +30,7 @@ resource "hostingde_record" "example" {
   content = "mail.example.com"
   ttl = 300
   priority = 10
+  comments = "Example Comment"
 }
 ```
 
@@ -47,6 +48,7 @@ resource "hostingde_record" "example" {
 
 - `priority` (Number) Priority of MX and SRV records.
 - `ttl` (Number) TTL of the DNS record in seconds. Minimum is 60, maximum is 31556926. Defaults to 3600.
+- `comments` (String) Comment to the record.
 
 ### Read-Only
 

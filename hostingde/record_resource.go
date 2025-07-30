@@ -46,6 +46,7 @@ type recordResourceModel struct {
 	Content  types.String `tfsdk:"content"`
 	TTL      types.Int64  `tfsdk:"ttl"`
 	Priority types.Int64  `tfsdk:"priority"`
+	Comments types.String `tfsdk:"comments"`
 }
 
 // Metadata returns the resource type name.
@@ -96,6 +97,11 @@ func (r *recordResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 				Required:    false,
 				Optional:    true,
 			},
+			"comments": schema.StringAttribute{
+				Description: "Comment to the record.",
+				Required:    false,
+				Optional:    true,
+			},
 		},
 	}
 }
@@ -118,6 +124,7 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 		Content:  plan.Content.ValueString(),
 		TTL:      int(plan.TTL.ValueInt64()),
 		Priority: int(plan.Priority.ValueInt64()),
+		Comments: plan.Comments.ValueString(),
 	}
 
 	recordReq := RecordsUpdateRequest{
@@ -141,14 +148,14 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
 				break;
-			} 
+			}
 
 			normalizedContent := normalizeRecordContent(responseRecord.Content);
 			if normalizedContent == record.Content {
 				returnedRecord = responseRecord
 				returnedRecord.Content = normalizedContent
 				break;
-			} 
+			}
 		}
 	}
 
@@ -160,6 +167,7 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 	plan.Content = types.StringValue(returnedRecord.Content)
 	plan.TTL = types.Int64Value(int64(returnedRecord.TTL))
 	plan.Priority = types.Int64Value(int64(returnedRecord.Priority))
+	plan.Comments = types.StringValue(returnedRecord.Comments)
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, plan)
@@ -208,6 +216,7 @@ func (r *recordResource) Read(ctx context.Context, req resource.ReadRequest, res
 	state.Content = types.StringValue(normalizeRecordContent(returnedRecord.Content))
 	state.TTL = types.Int64Value(int64(returnedRecord.TTL))
 	state.Priority = types.Int64Value(int64(returnedRecord.Priority))
+	state.Comments = types.StringValue(returnedRecord.Comments)
 
 	// Set refreshed state
 	diags = resp.State.Set(ctx, &state)
@@ -236,6 +245,7 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 		Content:  plan.Content.ValueString(),
 		TTL:      int(plan.TTL.ValueInt64()),
 		Priority: int(plan.Priority.ValueInt64()),
+		Comments: plan.Comments.ValueString(),
 	}
 
 	recordReq := RecordsUpdateRequest{
@@ -259,14 +269,14 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
 				break;
-			} 
+			}
 
 			normalizedContent := normalizeRecordContent(responseRecord.Content);
 			if normalizedContent == record.Content {
 				returnedRecord = responseRecord
 				returnedRecord.Content = normalizedContent
 				break;
-			} 
+			}
 		}
 	}
 
@@ -278,6 +288,7 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 	plan.Content = types.StringValue(returnedRecord.Content)
 	plan.TTL = types.Int64Value(int64(returnedRecord.TTL))
 	plan.Priority = types.Int64Value(int64(returnedRecord.Priority))
+	plan.Comments = types.StringValue(returnedRecord.Comments)
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
