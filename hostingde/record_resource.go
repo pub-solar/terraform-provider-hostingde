@@ -148,14 +148,14 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
 				break;
-			}
+			} 
 
 			normalizedContent := normalizeRecordContent(responseRecord.Content);
 			if normalizedContent == record.Content {
 				returnedRecord = responseRecord
 				returnedRecord.Content = normalizedContent
 				break;
-			}
+			} 
 		}
 	}
 
