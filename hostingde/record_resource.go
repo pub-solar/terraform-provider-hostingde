@@ -99,6 +99,7 @@ func (r *recordResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			},
 			"comments": schema.StringAttribute{
 				Description: "Comment to the record.",
+				Computed:    true,
 				Required:    false,
 				Optional:    true,
 			},
