@@ -86,6 +86,7 @@ type DNSRecord struct {
 	Content          string `json:"content,omitempty"`
 	TTL              int    `json:"ttl,omitempty"`
 	Priority         int    `json:"priority"`
+	Comments         string `json:"comments,omitempty"`
 	LastChangeDate   string `json:"lastChangeDate,omitempty"`
 }
 

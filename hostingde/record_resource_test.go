@@ -53,6 +53,7 @@ resource "hostingde_record" "test_mx" {
   type = "MX"
   content = "mail.example2.test"
   priority = 10
+  comments = "Example Comment"
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -66,6 +67,8 @@ resource "hostingde_record" "test_mx" {
 					resource.TestCheckResourceAttr("hostingde_record.test_mx", "content", "mail.example2.test"),
 					// Verify email attribute.
 					resource.TestCheckResourceAttr("hostingde_zone.test", "email", "hostmaster@example2.test"),
+					// Verify comments attribute.
+					resource.TestCheckResourceAttr("hostingde_record.test_mx", "comments", "Example Comment"),
 					// Verify dynamic values have any value set in the state.
 					resource.TestCheckResourceAttrSet("hostingde_record.test_mx", "id"),
 				),

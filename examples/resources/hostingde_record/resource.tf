@@ -15,4 +15,5 @@ resource "hostingde_record" "example" {
   content = "mail.example.com"
   ttl = 300
   priority = 10
+  comments = "Example Comment"
 }
