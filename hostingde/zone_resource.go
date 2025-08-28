@@ -76,7 +76,7 @@ func (r *zoneResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 	}
 }
 
-// Create a new resource
+// Create a new resource.
 func (r *zoneResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	// Retrieve values from plan
 	var plan zoneResourceModel

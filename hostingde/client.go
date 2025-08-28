@@ -13,7 +13,6 @@ import (
 	"time"
 )
 
-// Client -
 type Client struct {
 	HTTPClient *http.Client
 	accountId  string
