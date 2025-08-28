@@ -58,6 +58,8 @@ resource "hostingde_record" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 # DNS record can be imported by specifying the record id.
 # See the README for details how to get the record id.

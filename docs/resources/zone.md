@@ -40,6 +40,8 @@ resource "hostingde_zone" "sample" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 # DNS zone can be imported by specifying the zone id.
 terraform import hostingde_zone.example 171029aw8802239
