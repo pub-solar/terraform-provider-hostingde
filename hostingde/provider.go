@@ -15,7 +15,7 @@ import (
 
 const defaultBaseURL = "https://secure.hosting.de/api/dns/v1/json"
 
-// Ensure the implementation satisfies the expected interfaces
+// Ensure the implementation satisfies the expected interfaces.
 var (
 	_ provider.Provider = &hostingdeProvider{}
 )

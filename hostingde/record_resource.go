@@ -23,8 +23,8 @@ var (
 )
 
 func normalizeRecordContent(content string) string {
-	newContent := strings.ReplaceAll(content, "\" \"", "");
-	return strings.ReplaceAll(newContent, "\"", "");
+	newContent := strings.ReplaceAll(content, "\" \"", "")
+	return strings.ReplaceAll(newContent, "\"", "")
 }
 
 // NewRecordResource is a helper function to simplify the provider implementation.
@@ -107,7 +107,7 @@ func (r *recordResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 	}
 }
 
-// Create a new resource
+// Create a new resource.
 func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	// Retrieve values from plan
 	var plan recordResourceModel
@@ -148,15 +148,15 @@ func (r *recordResource) Create(ctx context.Context, req resource.CreateRequest,
 		if responseRecord.Name == record.Name && responseRecord.Type == record.Type {
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
-				break;
-			} 
+				break
+			}
 
-			normalizedContent := normalizeRecordContent(responseRecord.Content);
+			normalizedContent := normalizeRecordContent(responseRecord.Content)
 			if normalizedContent == record.Content {
 				returnedRecord = responseRecord
 				returnedRecord.Content = normalizedContent
-				break;
-			} 
+				break
+			}
 		}
 	}
 
@@ -269,14 +269,14 @@ func (r *recordResource) Update(ctx context.Context, req resource.UpdateRequest,
 		if responseRecord.Name == record.Name && responseRecord.Type == record.Type {
 			if responseRecord.Content == record.Content {
 				returnedRecord = responseRecord
-				break;
+				break
 			}
 
-			normalizedContent := normalizeRecordContent(responseRecord.Content);
+			normalizedContent := normalizeRecordContent(responseRecord.Content)
 			if normalizedContent == record.Content {
 				returnedRecord = responseRecord
 				returnedRecord.Content = normalizedContent
-				break;
+				break
 			}
 		}
 	}
